@@ -80,17 +80,27 @@ const LearnerSubmissions = [
 function getLearnerData(course, ag, submissions) {
   const result = []
   if (course.id == ag.course_id) {
+    let learnerID = [];
     for (let i = 0; i < LearnerSubmissions.length; i++) {
+      if (i == 0) {
+        learnerID.push(LearnerSubmissions[i].id);
+      } else if (LearnerSubmissions[i].id != LearnerSubmissions[i - 1].id) {
+        learnerID.push(LearnerSubmissions[i].id);
+      }
+    }
 
-      let learnerArr = [];
+    for (let i = 0; i < learnerID.length; i++) {
+      let learnerObj = {};
+      let grades = [];
+      let average;
+      
+      for (let x = 0; x < LearnerSubmissions.length; x++) {
+        if (learnerID[i] == LearnerSubmissions[x].id){
+          grades.push(LearnerSubmissions[x].submission.score);
 
-      for (let x = 0; x < AssignmentGroup.assignments.length; x++) {
-        // if learner id is the same, put in array
-        // calculate the average grade in the same object using reduce function
-        //put grades of each submitted assignment
-        // if date of submission < date due: skip
-
-
+        } else {
+          continue;
+        }
       }
     }
   } else {

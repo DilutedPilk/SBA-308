@@ -78,34 +78,49 @@ const LearnerSubmissions = [
 
 
 function getLearnerData(course, ag, submissions) {
+
   const result = []
   if (course.id == ag.course_id) {
+
     let learnerID = [];
     for (let i = 0; i < LearnerSubmissions.length; i++) {
+
       if (i == 0) {
-        learnerID.push(LearnerSubmissions[i].id);
-      } else if (LearnerSubmissions[i].id != LearnerSubmissions[i - 1].id) {
-        learnerID.push(LearnerSubmissions[i].id);
+        learnerID.push(LearnerSubmissions[i].learner_id);
+      } else if (LearnerSubmissions[i].learner_id != LearnerSubmissions[i - 1].learner_id) {
+        learnerID.push(LearnerSubmissions[i].learner_id);
+      } else {
+        continue
       }
+
     }
 
     for (let i = 0; i < learnerID.length; i++) {
-      let learnerObj = {};
-      let grades = [];
-      let average;
-      
-      for (let x = 0; x < LearnerSubmissions.length; x++) {
-        if (learnerID[i] == LearnerSubmissions[x].id){
-          grades.push(LearnerSubmissions[x].submission.score);
 
+      let grades = [];
+
+      for (let x = 0; x < LearnerSubmissions.length; x++) {
+
+        if (learnerID[i] == LearnerSubmissions[x].learner_id) {
+          for (let z = 0; z < AssignmentGroup.assignments.length; z++){
+            if (LearnerSubmissions[x].assignment_id == AssignmentGroup.assignments[z].id){
+              grades.push(LearnerSubmissions[x].submission.score/AssignmentGroup.assignments[z].points_possible);
+            }
+          }
         } else {
-          continue;
+          continue
         }
+
       }
+
+      let average = grades.reduce((accumulator, currentValue) => accumulator + currentValue, 0,)/grades.length;
+      result.push({id: learnerID[i], avg: average});
     }
+
   } else {
     throw console.error("Course info ID does not match assignment group!");
   }
+
   return result;
 }
 

@@ -104,7 +104,18 @@ function getLearnerData(course, ag, submissions) {
         if (learnerID[i] == LearnerSubmissions[x].learner_id) {
           for (let z = 0; z < AssignmentGroup.assignments.length; z++){
             if (LearnerSubmissions[x].assignment_id == AssignmentGroup.assignments[z].id){
-              grades.push(LearnerSubmissions[x].submission.score/AssignmentGroup.assignments[z].points_possible);
+
+              let learnerSubmit = new Date (LearnerSubmissions[x].submission.submitted_at);
+              let dueDate = new Date (AssignmentGroup.assignments[z].due_at);
+              let today = new Date (AssignmentGroup.assignments[1].due_at)
+              let late = LearnerSubmissions[x].submission.score*.10;
+              if (today < dueDate) {
+                continue;
+              } else if (learnerSubmit > dueDate){
+                grades.push((LearnerSubmissions[x].submission.score - late)/AssignmentGroup.assignments[z].points_possible);
+              } else {
+                grades.push(LearnerSubmissions[x].submission.score/AssignmentGroup.assignments[z].points_possible);
+              }
             }
           }
         } else {
@@ -113,8 +124,26 @@ function getLearnerData(course, ag, submissions) {
 
       }
 
+      let temp = []
+      let obj = {}
+
       let average = grades.reduce((accumulator, currentValue) => accumulator + currentValue, 0,)/grades.length;
-      result.push({id: learnerID[i], avg: average});
+      
+      obj.id = learnerID[i], 
+      obj.avg=average;
+
+      for (let x = 1; x <= grades.length; x++){
+        temp.push(x);
+      }
+
+      for (let x = 0; x < temp.length; x++){
+        let arr = temp[x];
+        let grade = grades[x]
+        obj[arr] = grade;
+
+      }
+
+      result.push(obj)
     }
 
   } else {

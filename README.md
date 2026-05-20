@@ -4,7 +4,7 @@ The program currently has two functions. The first function creates an array tha
 Second function grabs both learner IDs and puts their grades into a second array called "grades". Those grades are then averaged out and put into a "result" array.
 The final console log shows the result of the second function, which prints out two objects representing the two students and their grades for two assignments, plus the average overall.
 
-Issues:
+<h3 align="center">Issues</h3>
 
 As the third assignment isn't due yet, it is not counted in the average. The first student has submitted the third assignment while the second student has not. I attempted to mitigate the issue and stop the third assignment from calculating into the first student's average and I am unsure if it was implimented correctly.
 

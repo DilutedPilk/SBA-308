@@ -8,4 +8,4 @@ The final console log shows the result of the second function, which prints out 
 
 As the third assignment isn't due yet, it is not counted in the average. The first student has submitted the third assignment while the second student has not. I attempted to mitigate the issue and stop the third assignment from calculating into the first student's average and I am unsure if it was implimented correctly.
 
-I should have used a find function to see if there are any repeats in the array. This problem does not appear in this particular array but if the submissions.learner_id happen to be disorganized, the program would likely not work the way it should.
+I should have used a find function to see if there are any repeats in the getID() function. This problem does not appear in this particular array but if the submissions.learner_id happen to be disorganized, the program would likely not work the way it should.

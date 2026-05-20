@@ -1,6 +1,7 @@
-Assignment for SBA 308. 
+<h1 align="center"> Assignment for SBA 308 </h1>
+
 The program currently has two functions. The first function creates an array that puts both learner IDs into an array.
-Second function grabs both learner IDs and puts their grades into a second array called "grades. Those grades are then averaged out and put into a "result" array.
+Second function grabs both learner IDs and puts their grades into a second array called "grades". Those grades are then averaged out and put into a "result" array.
 The final console log shows the result of the second function, which prints out two objects representing the two students and their grades for two assignments, plus the average overall.
 
 Issues:

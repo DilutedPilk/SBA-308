@@ -5,7 +5,7 @@ const CourseInfo = {
 };
 
 // The provided assignment group.
-const AssignmentGroup = {
+const ag = {
   id: 12345,
   name: "Fundamentals of JavaScript",
   course_id: 451,
@@ -33,7 +33,7 @@ const AssignmentGroup = {
 };
 
 // The provided learner submission data.
-const LearnerSubmissions = [
+const submissions = [
   {
     learner_id: 125,
     assignment_id: 1,
@@ -76,86 +76,90 @@ const LearnerSubmissions = [
   }
 ];
 
+function getID(submissions) {
+  let learnerID = [];
+  for (let i = 0; i < submissions.length; i++) {
 
-function getLearnerData(course, ag, submissions) {
-
-  const result = []
-  if (course.id == ag.course_id) {
-
-    let learnerID = [];
-    for (let i = 0; i < LearnerSubmissions.length; i++) {
-
-      if (i == 0) {
-        learnerID.push(LearnerSubmissions[i].learner_id);
-      } else if (LearnerSubmissions[i].learner_id != LearnerSubmissions[i - 1].learner_id) {
-        learnerID.push(LearnerSubmissions[i].learner_id);
-      } else {
-        continue
-      }
-
+    if (i == 0) {
+      learnerID.push(submissions[i].learner_id);
+    } else if (submissions[i].learner_id != submissions[i - 1].learner_id) {
+      learnerID.push(submissions[i].learner_id);
+    } else {
+      continue
     }
 
-    for (let i = 0; i < learnerID.length; i++) {
-
-      let grades = [];
-
-      for (let x = 0; x < LearnerSubmissions.length; x++) {
-
-        if (learnerID[i] == LearnerSubmissions[x].learner_id) {
-          for (let z = 0; z < AssignmentGroup.assignments.length; z++){
-            if (LearnerSubmissions[x].assignment_id == AssignmentGroup.assignments[z].id){
-
-              let learnerSubmit = new Date (LearnerSubmissions[x].submission.submitted_at);
-              let dueDate = new Date (AssignmentGroup.assignments[z].due_at);
-              let today = new Date (AssignmentGroup.assignments[1].due_at)
-              let late = LearnerSubmissions[x].submission.score*.10;
-              if (today < dueDate) {
-                continue;
-              } else if (learnerSubmit > dueDate){
-                grades.push((LearnerSubmissions[x].submission.score - late)/AssignmentGroup.assignments[z].points_possible);
-              } else {
-                grades.push(LearnerSubmissions[x].submission.score/AssignmentGroup.assignments[z].points_possible);
-              }
-            }
-          }
-        } else {
-          continue
-        }
-
-      }
-
-      let temp = []
-      let obj = {}
-
-      let average = grades.reduce((accumulator, currentValue) => accumulator + currentValue, 0,)/grades.length;
-      
-      obj.id = learnerID[i], 
-      obj.avg=average;
-
-      for (let x = 1; x <= grades.length; x++){
-        temp.push(x);
-      }
-
-      for (let x = 0; x < temp.length; x++){
-        let arr = temp[x];
-        let grade = grades[x]
-        obj[arr] = grade;
-
-      }
-
-      result.push(obj)
-    }
-
-  } else {
-    throw console.error("Course info ID does not match assignment group!");
   }
-
-  return result;
+  return learnerID;
 }
 
-const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+  function getLearnerData(course, ag, submissions) {
 
-console.log(result);
+    const result = []
+    if (course.id == ag.course_id) {
+
+      let learnerID = getID(submissions);
+
+      for (let i = 0; i < learnerID.length; i++) {
+
+        let grades = [];
+
+        for (let x = 0; x < submissions.length; x++) {
+
+          if (learnerID[i] == submissions[x].learner_id) {
+            for (let z = 0; z < ag.assignments.length; z++) {
+              if (submissions[x].assignment_id == ag.assignments[z].id) {
+
+                let learnerSubmit = new Date(submissions[x].submission.submitted_at);
+                let dueDate = new Date(ag.assignments[z].due_at);
+                let today = new Date(ag.assignments[1].due_at)
+                let late = submissions[x].submission.score * .10;
+                if (today < dueDate) {
+                  continue;
+                } else if (learnerSubmit > dueDate) {
+                  grades.push((submissions[x].submission.score - late) / ag.assignments[z].points_possible);
+                } else {
+                  grades.push(submissions[x].submission.score / ag.assignments[z].points_possible);
+                }
+              }
+            }
+          } else {
+            continue
+          }
+
+        }
+
+        let temp = []
+        let obj = {}
+
+        let average = grades.reduce((accumulator, currentValue) => accumulator + currentValue, 0,) / grades.length;
+
+        obj.id = learnerID[i],
+          obj.avg = average;
+
+        for (let x = 1; x <= grades.length; x++) {
+          temp.push(x);
+        }
+
+        for (let x = 0; x < temp.length; x++) {
+          let arr = temp[x];
+          let grade = grades[x]
+          obj[arr] = grade;
+
+        }
+
+        result.push(obj)
+      }
+
+    } else {
+      throw console.error("Course info ID does not match assignment group!");
+    }
+
+    return result;
+  }
+
+  const result = getLearnerData(CourseInfo, ag, submissions);
+
+  console.log(result);
 // here, we would process this data to achieve the desired result.
 //   const result = [
 //     {

@@ -5,7 +5,7 @@ const CourseInfo = {
 };
 
 // The provided assignment group.
-const ag = {
+const AssignmentGroup = {
   id: 12345,
   name: "Fundamentals of JavaScript",
   course_id: 451,
@@ -33,7 +33,7 @@ const ag = {
 };
 
 // The provided learner submission data.
-const submissions = [
+const LearnerSubmission = [
   {
     learner_id: 125,
     assignment_id: 1,
@@ -76,7 +76,7 @@ const submissions = [
   }
 ];
 
-function getID(submissions) {
+function getID(submissions) { //Puts learner IDs into an array without repeats
   let learnerID = [];
   for (let i = 0; i < submissions.length; i++) {
 
@@ -99,13 +99,13 @@ function getID(submissions) {
 
       let learnerID = getID(submissions);
 
-      for (let i = 0; i < learnerID.length; i++) {
+      for (let i = 0; i < learnerID.length; i++) { // Grabs grades from learner submissions
 
         let grades = [];
 
         for (let x = 0; x < submissions.length; x++) {
 
-          if (learnerID[i] == submissions[x].learner_id) {
+          if (learnerID[i] == submissions[x].learner_id) {  //Attempt on skipping final assignment from average grade
             for (let z = 0; z < ag.assignments.length; z++) {
               if (submissions[x].assignment_id == ag.assignments[z].id) {
 
@@ -128,6 +128,8 @@ function getID(submissions) {
 
         }
 
+        // Makes objects for each student's grades and average
+        
         let temp = []
         let obj = {}
 
@@ -157,21 +159,6 @@ function getID(submissions) {
     return result;
   }
 
-  const result = getLearnerData(CourseInfo, ag, submissions);
+  const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmission);
 
   console.log(result);
-// here, we would process this data to achieve the desired result.
-//   const result = [
-//     {
-//       id: 125,
-//       avg: 0.985, // (47 + 150) / (50 + 150)
-//       1: 0.94, // 47 / 50
-//       2: 1.0 // 150 / 150
-//     },
-//     {
-//       id: 132,
-//       avg: 0.82, // (39 + 125) / (50 + 150)
-//       1: 0.78, // 39 / 50
-//       2: 0.833 // late: (140 - 15) / 150
-//     }
-//   ];
